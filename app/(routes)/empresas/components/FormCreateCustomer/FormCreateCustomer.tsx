@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 import { z } from "zod";
+import axios from "axios";
 import { FormCreateCustomerProps } from "./FormCreateCustomer.types";
 
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ import {
 
 import { UploadButton } from "@/utils/uploadthing";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string(),
@@ -39,6 +41,8 @@ const formSchema = z.object({
 
 export const FormCreateCustomer = (props: FormCreateCustomerProps) => {
   const { setOpenModalCreate } = props;
+
+  const router = useRouter();
 
   const [photoUploaded, setPhotoUploaded] = useState(false);
 
@@ -57,7 +61,17 @@ export const FormCreateCustomer = (props: FormCreateCustomerProps) => {
   const { isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      axios.post("/api/empresas", values);
+
+      toast("Empresa creada");
+
+      router.refresh();
+
+      setOpenModalCreate(false);
+    } catch {
+      toast.error("Algo salió mal.");
+    }
   };
 
   return (
@@ -87,9 +101,7 @@ export const FormCreateCustomer = (props: FormCreateCustomerProps) => {
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Paí<select></select>
-                  </FormLabel>
+                  <FormLabel>Paí</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -100,13 +112,12 @@ export const FormCreateCustomer = (props: FormCreateCustomerProps) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="spain">España</SelectItem>
-                      <SelectItem value="united-kingdom">
-                        Reino Unido
-                      </SelectItem>
-                      <SelectItem value="portugal">Portugal</SelectItem>
-                      <SelectItem value="grecia">Grecia</SelectItem>
-                      <SelectItem value="italia">Italia</SelectItem>
+                      <SelectItem value="España">España</SelectItem>
+                      <SelectItem value="Reino Unido">Reino Unido</SelectItem>
+                      <SelectItem value="Portugal">Portugal</SelectItem>
+                      <SelectItem value="Grecia">Grecia</SelectItem>
+                      <SelectItem value="Italia">Italia</SelectItem>
+                      <SelectItem value="Perú">Perú</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -176,11 +187,11 @@ export const FormCreateCustomer = (props: FormCreateCustomerProps) => {
                         endpoint="profileImage"
                         onClientUploadComplete={(res) => {
                           form.setValue("profileImage", res?.[0].url);
-                          toast("¡Foto subida correctamente!");
+                          toast.success("¡Foto subida correctamente!");
                           setPhotoUploaded(true);
                         }}
                         onUploadError={() => {
-                          toast("Error al subir la foto");
+                          toast.error("Error al subir la foto");
                         }}
                       />
                     )}
