@@ -5,14 +5,14 @@ import { Header } from "./components/Header";
 import { CompanyInformation } from "./components/CompanyInformation";
 import { FooterCompany } from "./components/FooterCompany";
 
-// Tipado correcto según App Router de Next.js
 interface CompanyIdPageProps {
   params: {
     empresasId: string;
   };
+  searchParams?: Record<string, string | string[]>;
 }
 
-const CompanyIdPage = async ({ params }: CompanyIdPageProps) => {
+export default async function CompanyIdPage({ params }: CompanyIdPageProps) {
   const { userId } = auth();
 
   if (!userId) return redirect("/");
@@ -33,6 +33,4 @@ const CompanyIdPage = async ({ params }: CompanyIdPageProps) => {
       <FooterCompany empresasId={company.id} />
     </div>
   );
-};
-
-export default CompanyIdPage;
+}
