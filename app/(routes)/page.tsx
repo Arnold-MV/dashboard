@@ -6,7 +6,7 @@ import { TotalSuscribers } from "./components/TotalSuscribers";
 import { ListIntegrations } from "./components/ListIntegrations";
 import { formatPrice } from "@/lib/formatPrice";
 
-export const dataCardSummary = [
+const dataCardSummary = [
   {
     icon: UsersRound,
     total: "12.458",

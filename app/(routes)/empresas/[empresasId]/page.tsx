@@ -5,11 +5,14 @@ import { Header } from "./components/Header";
 import { CompanyInformation } from "./components/CompanyInformation";
 import { FooterCompany } from "./components/FooterCompany";
 
-const CompanyIdPage = async ({
-  params,
-}: {
-  params: { empresasId: string };
-}) => {
+// Tipado correcto según App Router de Next.js
+interface CompanyIdPageProps {
+  params: {
+    empresasId: string;
+  };
+}
+
+const CompanyIdPage = async ({ params }: CompanyIdPageProps) => {
   const { userId } = auth();
 
   if (!userId) return redirect("/");
