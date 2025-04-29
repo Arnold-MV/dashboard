@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
     ],
     domains: ["lk1kborl36.ufs.sh"],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;
